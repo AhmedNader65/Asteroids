@@ -26,11 +26,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         getDates()
         viewModelScope.launch {
             try {
+                val apiKey = application.resources.getString(R.string.API_KEY)
                 asteroidsRepository.refreshAsteroids(
-                    today, lastDay, application.resources.getString(
-                        R.string.API_KEY
-                    )
+                    today, lastDay, apiKey
                 )
+                asteroidsRepository.getPOD(apiKey)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -39,6 +39,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
 
     val asteroids = asteroidsRepository.asteroids
+    val pod = asteroidsRepository.pod
 
 
     private fun getDates() {

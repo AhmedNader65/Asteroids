@@ -1,11 +1,15 @@
 package com.udacity.asteroidradar.network
 
 import android.provider.Telephony.TextBasedSmsColumns.BODY
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.Constants.BASE_URL
+import com.udacity.asteroidradar.domain.POD
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -25,9 +29,16 @@ interface NeoWSService {
     @GET("planetary/apod")
     suspend fun getPOD(
         @Query("api_key") apiKey: String,
-    ): String
+    ): POD
 }
 
+/**
+ * Build the Moshi object that Retrofit will be using, making sure to add the Kotlin adapter for
+ * full Kotlin compatibility.
+ */
+private val moshi = Moshi.Builder()
+    .add(KotlinJsonAdapterFactory())
+    .build()
 /**
  * Main entry point for network access. Call like `Network.devbytes.getPlaylist()`
  */
@@ -37,6 +48,7 @@ object Network {
         .baseUrl(BASE_URL)
         .client(getClient())
         .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
     private fun getClient(): OkHttpClient {

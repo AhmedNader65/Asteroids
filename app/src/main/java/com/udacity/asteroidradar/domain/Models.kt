@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.domain
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -20,3 +21,8 @@ data class Asteroid(
     val relativeVelocity: Double, val distanceFromEarth: Double,
     val isPotentiallyHazardous: Boolean
 ) : Parcelable
+
+data class POD(
+    @Json(name = "url")
+    val url: String
+)
