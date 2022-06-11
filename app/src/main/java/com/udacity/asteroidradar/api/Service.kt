@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.network
 
+import com.udacity.asteroidradar.Constants.BASE_URL
 import com.udacity.asteroidradar.domain.Asteroid
 import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
@@ -25,7 +26,7 @@ interface NeoWSService {
 object Network {
     // Configure retrofit to parse JSON and use coroutines
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.nasa.gov/neo/rest/v1/")
+        .baseUrl(BASE_URL)
         .addConverterFactory(ScalarsConverterFactory.create())
         .build()
 
