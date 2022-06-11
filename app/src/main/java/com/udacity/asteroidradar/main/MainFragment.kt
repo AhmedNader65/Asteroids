@@ -42,7 +42,11 @@ class MainFragment : Fragment() {
             findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
         })
 
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.refreshData()
+        }
         viewModel.asteroids.observe(viewLifecycleOwner) {
+            binding.swipeRefresh.isRefreshing = false
             asteroidsAdapter.asteroids = it
         }
         viewModel.pod.observe(viewLifecycleOwner) {

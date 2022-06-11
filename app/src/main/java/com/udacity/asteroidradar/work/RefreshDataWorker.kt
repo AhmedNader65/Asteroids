@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.work
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.database.getDatabase
@@ -34,7 +35,7 @@ class RefreshDataWorker(context: Context, params: WorkerParameters) :
             repository.refreshAsteroids(
                 today,
                 lastDay,
-                applicationContext.resources.getString(R.string.API_KEY)
+                BuildConfig.NASA_API_KEY
             )
             Result.success()
         } catch (e: HttpException) {

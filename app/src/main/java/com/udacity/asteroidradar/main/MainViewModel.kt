@@ -5,6 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.udacity.asteroidradar.BuildConfig.NASA_API_KEY
 import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.database.getDatabase
@@ -31,9 +32,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      * init{} is called immediately when this ViewModel is created.
      */
     init {
+        refreshData()
+    }
+
+    fun refreshData() {
+
         getDates()
         viewModelScope.launch {
-            val apiKey = application.resources.getString(R.string.API_KEY)
+            val apiKey = NASA_API_KEY
             try {
                 asteroidsRepository.refreshAsteroids(
                     today, lastDay, apiKey
@@ -46,7 +52,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
             } catch (e: Exception) {
                 sharedPreferences.getString(URL_KEY,"")?.let {
-                 asteroidsRepository.getCachedPOD(it,sharedPreferences.getString(IMAGE_DESC,"")!!)  }
+                    asteroidsRepository.getCachedPOD(it,sharedPreferences.getString(IMAGE_DESC,"")!!)  }
             }
         }
     }
