@@ -29,6 +29,7 @@ class AsteroidsRepository(private val database: AsteroidDatabase) {
         withContext(Dispatchers.IO) {
             val asteroids =
                 parseAsteroidsJsonResult(JSONObject(Network.asteroids.getNeoWS(startDate, endDate,apiKey)))
+            database.asteroidDao.delete()
             database.asteroidDao.insertAll(asteroids)
         }
     }

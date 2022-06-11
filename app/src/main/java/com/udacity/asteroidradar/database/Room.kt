@@ -12,6 +12,9 @@ interface AsteroidDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(asteroids: ArrayList<Asteroid>)
+
+    @Query("DELETE FROM asteroid")
+    fun delete()
 }
 
 

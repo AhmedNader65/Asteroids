@@ -25,8 +25,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     init {
         getDates()
         viewModelScope.launch {
-            asteroidsRepository.refreshAsteroids(today,lastDay,application.resources.getString(
-                R.string.API_KEY))
+            try {
+                asteroidsRepository.refreshAsteroids(
+                    today, lastDay, application.resources.getString(
+                        R.string.API_KEY
+                    )
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -37,11 +44,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private fun getDates() {
 
         val calendar = Calendar.getInstance()
-            val currentTime = calendar.time
-            val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
-            today = dateFormat.format(currentTime)
-            calendar.add(Calendar.DAY_OF_YEAR, 7)
-            val lastTime = calendar.time
-            lastDay = dateFormat.format(lastTime)
+        val currentTime = calendar.time
+        val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+        today = dateFormat.format(currentTime)
+        calendar.add(Calendar.DAY_OF_YEAR, 7)
+        val lastTime = calendar.time
+        lastDay = dateFormat.format(lastTime)
     }
 }
