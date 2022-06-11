@@ -18,7 +18,7 @@ interface NeoWSService {
     suspend fun getNeoWS(
         @Query("start_date") start_date :String,
         @Query("end_date") end_date :String,
-        @Query("end_date") end_date :String,
+        @Query("api_key") apiKey :String,
     ): String
 }
 
