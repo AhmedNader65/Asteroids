@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.network
 import com.udacity.asteroidradar.Constants.BASE_URL
 import com.udacity.asteroidradar.domain.Asteroid
 import kotlinx.coroutines.Deferred
+import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
@@ -14,10 +15,11 @@ import retrofit2.http.Query
  */
 interface NeoWSService {
     @GET("feed")
-    fun getNeoWS(
+    suspend fun getNeoWS(
         @Query("start_date") start_date :String,
         @Query("end_date") end_date :String,
-    ): Deferred<Array<Asteroid>>
+        @Query("end_date") end_date :String,
+    ): String
 }
 
 /**

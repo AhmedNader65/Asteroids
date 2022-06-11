@@ -37,16 +37,14 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val asteroids = mutableListOf<Asteroid>()
-        asteroids.add(Asteroid(1, "432fds", "14-45-2025", 526464.32, 321.4, 432.44, 4324.3, false))
-        asteroids.add(Asteroid(1, "432fds", "14-45-2025", 526464.32, 321.4, 432.44, 4324.3, true))
-        asteroids.add(Asteroid(1, "432fds", "14-45-2025", 526464.32, 321.4, 432.44, 4324.3, false))
-        asteroids.add(Asteroid(1, "432fds", "14-45-2025", 526464.32, 321.4, 432.44, 4324.3, false))
-        asteroids.add(Asteroid(1, "432fds", "14-45-2025", 526464.32, 321.4, 432.44, 4324.3, true))
         val asteroidsAdapter = AsteroidsAdapter(AsteroidClick { asteroid ->
             findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
         })
-        asteroidsAdapter.asteroids = asteroids
+
+        viewModel.asteroids.observe(viewLifecycleOwner) {
+            asteroidsAdapter.asteroids = it
+
+        }
         binding.asteroidRecycler.apply {
             adapter = asteroidsAdapter
         }

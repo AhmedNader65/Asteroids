@@ -2,11 +2,13 @@ package com.udacity.asteroidradar.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.domain.Asteroid
 import com.udacity.asteroidradar.network.Network
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 
 class AsteroidsRepository(private val database: AsteroidDatabase) {
 
@@ -25,8 +27,8 @@ class AsteroidsRepository(private val database: AsteroidDatabase) {
      */
     suspend fun refreshAsteroids(startDate: String, endDate: String) {
         withContext(Dispatchers.IO) {
-            val asteroids = Network.asteroids.getNeoWS(startDate,endDate).await()
-            database.asteroidDao.insertAll(*asteroids)
+            val asteroids = parseAsteroidsJsonResult(JSONObject(Network.asteroids.getNeoWS(startDate,endDate)))
+            database.asteroidDao.insertAll(asteroids)
         }
     }
 }

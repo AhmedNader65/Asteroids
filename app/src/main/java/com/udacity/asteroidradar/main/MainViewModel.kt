@@ -17,7 +17,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      */
     init {
         viewModelScope.launch {
-            asteroidsRepository.refreshAsteroids("","")
+            asteroidsRepository.refreshAsteroids("2015-09-07","2015-09-08")
         }
     }
 
