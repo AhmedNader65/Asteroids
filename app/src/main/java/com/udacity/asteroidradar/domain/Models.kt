@@ -20,9 +20,16 @@ data class Asteroid(
     val absoluteMagnitude: Double, val estimatedDiameter: Double,
     val relativeVelocity: Double, val distanceFromEarth: Double,
     val isPotentiallyHazardous: Boolean
-) : Parcelable
+) : Parcelable{
+
+    fun isPotentiallyHazardousDescription():String{
+        return "This asteroid is ${if (!isPotentiallyHazardous) "not" else "" } potentially hazardous"
+    }
+}
 
 data class POD(
     @Json(name = "url")
-    val url: String
+    val url: String,
+    @Json(name = "title")
+    val title: String
 )

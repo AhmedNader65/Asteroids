@@ -46,7 +46,7 @@ class MainFragment : Fragment() {
             asteroidsAdapter.asteroids = it
         }
         viewModel.pod.observe(viewLifecycleOwner) {
-            Picasso.get().load(it.url).into(binding.activityMainImageOfTheDay)
+            viewModel.cachePOD(it)
         }
         binding.asteroidRecycler.apply {
             adapter = asteroidsAdapter

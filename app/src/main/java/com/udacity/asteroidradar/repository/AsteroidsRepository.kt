@@ -61,4 +61,8 @@ class AsteroidsRepository(private val database: AsteroidDatabase) {
             _pod.value = it
         }
     }
+
+    fun getCachedPOD(it: String, desc: String) {
+        _pod.value = POD(it,desc)
+    }
 }

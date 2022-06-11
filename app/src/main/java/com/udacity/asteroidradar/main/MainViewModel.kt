@@ -1,16 +1,21 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.database.getDatabase
+import com.udacity.asteroidradar.domain.POD
 import com.udacity.asteroidradar.repository.AsteroidsRepository
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
+
+private const val URL_KEY: String = "POD_URL"
+private const val IMAGE_DESC: String = "POD_DESC"
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -18,6 +23,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private lateinit var lastDay: String
     private val database = getDatabase(application)
     private val asteroidsRepository = AsteroidsRepository(database)
+    var sharedPreferences: SharedPreferences =
+        application.getSharedPreferences("MySharedPref", MODE_PRIVATE)
+    var myEdit = sharedPreferences.edit()
 
     /**
      * init{} is called immediately when this ViewModel is created.
@@ -25,14 +33,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     init {
         getDates()
         viewModelScope.launch {
+            val apiKey = application.resources.getString(R.string.API_KEY)
             try {
-                val apiKey = application.resources.getString(R.string.API_KEY)
                 asteroidsRepository.refreshAsteroids(
                     today, lastDay, apiKey
                 )
-                asteroidsRepository.getPOD(apiKey)
             } catch (e: Exception) {
                 e.printStackTrace()
+            }
+            try {
+                asteroidsRepository.getPOD(apiKey)
+
+            } catch (e: Exception) {
+                sharedPreferences.getString(URL_KEY,"")?.let {
+                 asteroidsRepository.getCachedPOD(it,sharedPreferences.getString(IMAGE_DESC,"")!!)  }
             }
         }
     }
@@ -41,7 +55,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val asteroids = asteroidsRepository.asteroids
     val pod = asteroidsRepository.pod
 
-
+    fun cachePOD(pod: POD){
+        myEdit.putString(URL_KEY,pod.url)
+        myEdit.putString(IMAGE_DESC,pod.title)
+        myEdit.apply()
+    }
     private fun getDates() {
 
         val calendar = Calendar.getInstance()
