@@ -15,10 +15,15 @@ import retrofit2.http.Query
  * A retrofit service to fetch NASA data.
  */
 interface NeoWSService {
-    @GET("feed")
+    @GET("neo/rest/v1/feed")
     suspend fun getNeoWS(
         @Query("start_date") start_date: String,
         @Query("end_date") end_date: String,
+        @Query("api_key") apiKey: String,
+    ): String
+
+    @GET("planetary/apod")
+    suspend fun getPOD(
         @Query("api_key") apiKey: String,
     ): String
 }
