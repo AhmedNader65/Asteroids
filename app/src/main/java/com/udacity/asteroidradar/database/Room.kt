@@ -8,7 +8,7 @@ import com.udacity.asteroidradar.domain.Asteroid
 @Dao
 interface AsteroidDao {
     @Query("select * from asteroid")
-    fun getAsteroids(): LiveData<List<AsteroidDao>>
+    fun getAsteroids(): LiveData<List<Asteroid>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg asteroid: Asteroid)

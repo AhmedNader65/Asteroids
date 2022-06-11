@@ -16,7 +16,7 @@ interface NeoWSService {
     fun getNeoWS(
         @Query("start_date") start_date :String,
         @Query("end_date") end_date :String,
-    ): Deferred<ArrayList<Asteroid>>
+    ): Deferred<Array<Asteroid>>
 }
 
 /**
