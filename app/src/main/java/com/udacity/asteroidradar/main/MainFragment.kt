@@ -7,6 +7,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
@@ -42,10 +43,8 @@ class MainFragment : Fragment() {
         asteroids.add(Asteroid(1, "432fds", "14-45-2025", 526464.32, 321.4, 432.44, 4324.3, false))
         asteroids.add(Asteroid(1, "432fds", "14-45-2025", 526464.32, 321.4, 432.44, 4324.3, false))
         asteroids.add(Asteroid(1, "432fds", "14-45-2025", 526464.32, 321.4, 432.44, 4324.3, true))
-        val asteroidsAdapter = AsteroidsAdapter(AsteroidClick {
-            Toast.makeText(requireContext(), "Asteroid ${it.id} is clicked", Toast.LENGTH_SHORT)
-                .show()
-
+        val asteroidsAdapter = AsteroidsAdapter(AsteroidClick { asteroid ->
+            findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
         })
         asteroidsAdapter.asteroids = asteroids
         binding.asteroidRecycler.apply {
